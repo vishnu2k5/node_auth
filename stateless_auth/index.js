@@ -1,20 +1,20 @@
 const express = require('express');
-
-
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const PORT = 3000;
+const mongoose = require('mongoose');
+const login = require('./routes/user_login');
+const signup = require('./routes/user_signup');
 
-app.post('/login', (req, res) => {
-    const {username, password} = req.body
-    //url formate is http://localhost:3000/login?username=user&password=pass
-    if (username === 'user' && password === 'pass') {
-        res.send('Login successful!');
-    } else {
-        res.status(401).send('Invalid credentials');
-    }
-});
+mongoose.connect('mongodb://localhost:27017/user_auth')
+.then(() => {console.log('Connected to MongoDB');})
+.catch(err => {console.error('Failed to connect to MongoDB', err);});
+
+app.use('/api/login', login);
+app.use('/api/signup', signup);
+
+
 
 
 app.listen(PORT, () => {
