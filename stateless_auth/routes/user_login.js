@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const {comparePasswords } = require('../controller/hashpasword');
+const home = require('./home');
 
 router
     .route('/')
@@ -20,10 +21,10 @@ router
             }
 
             const match = await comparePasswords(password, user.password);
-            if (!match) {
+            if (match) {
                 return res.status(401).send('Invalid credentials');
             }
-            res.send('Login successful!');
+            res.redirect('/api/home', home);
         } catch (error) {
             console.error(error);
             res.status(500).send('Internal server error');

@@ -6,6 +6,7 @@ const PORT = 3000;
 const mongoose = require('mongoose');
 const login = require('./routes/user_login');
 const signup = require('./routes/user_signup');
+const home = require('./routes/home');
 
 mongoose.connect('mongodb://localhost:27017/user_auth')
 .then(() => {console.log('Connected to MongoDB');})
