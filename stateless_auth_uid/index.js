@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const infoRoutes = require('./routes/info.js');
+const authroute = require('./routes/auth.js');
+const { handelsignuprequest } = require('./controllers/users.js');
+const { render } = require('ejs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/info/add', infoRoutes);
 app.use('/', infoRoutes);
+app.get(('/signup'),(req,res)=>{
+    res.render('signup')
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
