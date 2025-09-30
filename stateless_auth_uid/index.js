@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/info/add', infoRoutes);
-app.use('/info/get', infoRoutes);
+app.use('/', infoRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

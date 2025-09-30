@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-    <h1>Home</h1>
-    <ol>
-        {}
-    </ol>
+  <h1>Home</h1>
+  <ol>
+    <% infos.forEach(function(item) { %>
+      <li><%= item.name %> - <%= item.age %> - <%= item.email %></li>
+    <% }); %>
+  </ol>
+  <h2>add info</h2>
+  <form action="/info/add" method="post">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="number" name="age" placeholder="Age" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <button type="submit">Add Info</button>
+  </form>
 </body>
 </html>
