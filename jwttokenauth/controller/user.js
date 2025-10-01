@@ -1,4 +1,5 @@
-const users = require('../models/user');
+const users = require('../models/users');
+const{ generateToken } = require('../services/service');
 
 
 
@@ -8,29 +9,44 @@ const handleUserSignup = (req, res) => {
     // Handle user signup logic here
     const user = new users({username,email,password});
     user.save().then(() => {
-        res.status(201).send('User registered successfully');
+        res.status(201).render('loginpage',{alert:'Signup successful! Please login.'});
     }).catch((error) => {
         console.error(error);
-        res.status(500).send('Internal server error');
+        console.log(error.message);
+        res.status(500).redirect('/signup');
     });
 }
 
-const handleUserLogin = (req, res) => {
-    const { email, password } = req.body;
-    // Handle user login logic here
-    users.findOne({email}).then((user) => {
+const handleUserLogin = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).redirect('/login');
+        }
+
+        const user = await users.findOne({ email });
         if (!user) {
-            return res.status(401).send('Invalid credentials');
+            return res.status(401).redirect('/login');
         }
-        if (user.password !== password) {
-            return res.status(401).send('Invalid credentials');
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(401).redirect('/login');
         }
-        res.status(200).send('User logged in successfully');
-    }).catch((error) => {
+
+        const token = generateToken({ id: user._id, email: user.email });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax'
+        });
+
+        return res.status(200).redirect('/homeafterlogin');
+    } catch (error) {
         console.error(error);
-        res.status(500).send('Internal server error');
-    });
-}
+        return res.status(500).redirect('/login');
+    }
+};
 
 
 module.exports = { handleUserSignup, handleUserLogin }; 
