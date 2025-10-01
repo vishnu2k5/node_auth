@@ -9,7 +9,7 @@ const handleUserSignup = (req, res) => {
     // Handle user signup logic here
     const user = new users({username,email,password});
     user.save().then(() => {
-        res.status(201).render('loginpage',{alert:'Signup successful! Please login.'});
+        res.status(201).redirect('/login');
     }).catch((error) => {
         console.error(error);
         console.log(error.message);

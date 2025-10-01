@@ -1,15 +1,16 @@
 const { verifyToken } = require("../services/service");
 
 const checkIfLoggedIn = (req, res, next) => {
-   const token = req.cookies.token;
-    if (!token) {
-        return res.status(401).redirect('/login');
-    }
-    const verified = verifyToken(token);
-    if (!verified) {
-        return res.status(401).redirect('/login');
-    }
-    req.user = verified;
-    next();
+   try {
+    const token = req.cookies && req.cookies.token;
+    if (!token) return next();
+
+    const payload = verifyToken(token);
+    if (payload) return res.redirect('/homeafterlogin');
+
+    return next();
+  } catch (err) {
+    return next();
+  }
 };
 module.exports = checkIfLoggedIn;
