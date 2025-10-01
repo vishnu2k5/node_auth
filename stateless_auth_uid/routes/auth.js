@@ -7,6 +7,9 @@ const {handelsignuprequest} = require('../controllers/users')
 
 router
      .route('/signup')
+     .get((req,res)=>{
+        res.render('signup');
+     })
      .post(handelsignuprequest)
 
 

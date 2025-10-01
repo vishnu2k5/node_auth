@@ -14,7 +14,7 @@ const handelsignuprequest = async(req,res)=>{
         password
     })
 
-    res.render('signup',{user});
+    res.redirect('/');
 }
 
 
