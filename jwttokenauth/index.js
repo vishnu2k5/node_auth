@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
 app.use(staticRoutes);
-app.use(cheakiflogedin, authRoutes);
+app.use('/login', cheakiflogedin, authRoutes);
 
 
 app.listen(PORT, () => {

@@ -1,6 +1,5 @@
 const express = require('express');
-const router = express.Router();
-const jwt = require('jsonwebtoken');
+const router = express.Router({mergeParams: true});
 const { handleUserSignup, handleUserLogin } = require('../controller/user');
 
 router.post('/signup', handleUserSignup);

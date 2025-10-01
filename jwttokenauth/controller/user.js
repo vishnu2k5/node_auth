@@ -29,12 +29,14 @@ const handleUserLogin = async (req, res) => {
             return res.status(401).redirect('/login');
         }
 
-        const match = await bcrypt.compare(password, user.password);
+        const match = password === user.password;
         if (!match) {
             return res.status(401).redirect('/login');
         }
 
         const token = generateToken({ id: user._id, email: user.email });
+        // console.log(token);
+        // console.log(user);
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
