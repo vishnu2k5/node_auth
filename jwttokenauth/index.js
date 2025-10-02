@@ -15,10 +15,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-app.use('/login',cheakiflogedin);
+app.use('/login',cheakiflogedin,authRoutes);
+app.use('/signup',authRoutes);
 
 app.use(staticRoutes);
-app.use( authRoutes);
+
 
 
 app.listen(PORT, () => {

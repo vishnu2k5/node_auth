@@ -1,16 +1,16 @@
 const { verifyToken } = require("../services/service");
+const users = require("../models/users");
 
 const checkIfLoggedIn = (req, res, next) => {
-   try {
-    const token = req.cookies && req.cookies.token;
-    if (!token) return next();
+    const token = req.cookies.token;
+    if (!token) return res.redirect('/login');
 
-    const payload = verifyToken(token);
-    if (payload) return res.redirect('/homeafterlogin');
+    const { id, email } = verifyToken(token);
+    const user = users.findOne({ _id: id, email });
+    if (!user) return res.redirect('/login');
 
+    res.user = user;
     return next();
-  } catch (err) {
-    return next();
-  }
 };
+
 module.exports = checkIfLoggedIn;
